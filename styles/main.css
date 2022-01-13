@@ -1,0 +1,76 @@
+* {
+    box-sizing: border-box;
+  }
+
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: 'Spartan', sans-serif;
+    /* background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,0.9318102240896359) 35%, rgba(0,212,255,1) 100%); */
+    background: rgb(2,0,36);
+    background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,0.9122023809523809) 35%, rgba(75,86,88,1) 100%);
+}
+  
+
+header {
+    height: 20vh;
+}
+
+.header > h6 {
+    font-size: 70px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(99, 123, 128);
+}
+
+
+  
+.grid-wrapper {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  
+.grid {
+    align-items: center;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    justify-content: center;
+    height: 600px;
+    width: 600px;
+}
+
+.grid div {
+    border: 1px solid lightgrey;
+    background-color: aquamarine;
+    flex-grow: 1;
+    height: 17%;
+    width: 13%;
+}
+
+#firstPlayerDisk {
+    background-color: black;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+#secondPlayerDisk {
+    background-color: red;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+  /* .grid div.player-1 {
+    background-image: url('../assets/pika-sprite.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+  } */
