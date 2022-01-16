@@ -17,17 +17,6 @@ function init() {
     };
 
     scoreDisplay.innerHTML = score;
-  
-  
-    // function createGrid() {
-    //   // we need to create one square (div) for every grid cell
-    //   for (let i=1; i <= gridCellCount; i++) {
-    //     const elem = document.createElement("div");
-    //     elem.id = `${i}`;
-    //     elem.addEventListener("click", handleMoleClick);
-    //     grid.appendChild(elem);
-    //   }
-    // }
     
     const cellPositionDict = {};
 
@@ -46,7 +35,7 @@ function init() {
             subElem.addEventListener("click", handleMoleClick);
             elem.appendChild(subElem);
             
-            cellPositionDict[cellId] = {'x':c, 'y':i};
+            cellPositionDict[cellId] = {'x':`x${c}`, 'y':`y${i}`};
           };
         };
       }
@@ -60,25 +49,58 @@ function init() {
         console.log(currentPlayer);
     }
 
+    const rightDiagonalCells = (classList) => {
+        let x = Number(classList[0][1]);
+        let y = Number(classList[1][1]);
+        let iMin = Math.max(1, x - y + 1);
+        let iMax = Math.min(7, x - y + 6);
+        let result = []; 
+        for (let i=iMin; i<=iMax;i++) {
+            result.push(`x${i}.y${i+y-x}`);
+        }
+        return result.join()
+    }
+
+    function straightConsecutiveOccurence(classList) {
+        function getScore(array, player) {
+            let number = 0;
+            [...array].forEach(element => {
+                if (number < 4 && element.classList[2] === player) {
+                    number++;
+                } else if (number === 4) {
+                    console.log('Victory');
+                } else {
+                    number = 0;
+                }});
+            return number;
+        }
+    
+        var obj = {
+            'targetId': classList,
+            'hScore': getScore(document.getElementsByClassName(classList[1]), playerDiskIdDict[currentPlayer]['diskId']),
+            'vScore': getScore(document.getElementsByClassName(classList[0]), playerDiskIdDict[currentPlayer]['diskId']),
+            'rDiagScore': rightDiagonalCells(classList)
+          }
+        //   console.log(obj.hScore);
+        //   console.log(obj.vScore);
+          console.log(obj.rDiagScore);
+        //   console.log(obj);
+
+    }
 
 
     function handleMoleClick(e) {
-        console.log(e.target.id);
         const classList = document.getElementById(`${e.target.id}`).classList;
         if (!classList.contains('firstPlayerDisk') || !classList.contains('secondPlayerDisk')) {
-            console.log('first step');
             const validateClick = () => {
-                // const cellDisk = document.createElement("div");
-                // cellDisk.id = playerDiskIdDict[currentPlayer]['diskId'];
-                // document.getElementById(`${e.target.id}`).appendChild(cellDisk);
                 classList.remove('freeDisk');
                 classList.add(playerDiskIdDict[currentPlayer]['diskId']);
+                straightConsecutiveOccurence(classList);
                 nextPlayer();
             }
             if (e.target.id < 36 && (document.getElementById(`${Number(e.target.id) + 7}`).classList.contains('firstPlayerDisk') || document.getElementById(`${Number(e.target.id)+7}`).classList.contains('secondPlayerDisk'))) {
                 validateClick();
             } else if (e.target.id >= 36) {
-                console.log('o3');
                 validateClick();
             };
         };
@@ -98,7 +120,11 @@ function init() {
   
   document.addEventListener('DOMContentLoaded', init)
 
+// i_min = max(1, x - y + 1)
+// i_max = min(7, x - y + 6)
 
+// for i_min<i<i_max:
+//   get class(i, i+y-x, player)
 
 //   function handleMoleClick(e) {
 //     console.log(e.target.id);
@@ -126,3 +152,36 @@ function init() {
   
 // const map = {"first" : "1", "second" : "2"};
 // console.log(getKeyByValue(map,"2"));
+
+// check horizontal score
+
+// let x:col & y:row
+
+// get row/col number of cell clicked
+
+
+
+// get row/col number of first occurence of player's disk
+
+// const firstOccurence = document.getElementsByClassName(`${rowNum} ${playerDiskIdDict[currentPlayer]['diskId']}`)[0].classList[0]
+
+
+
+// check consecutive occurence of same payer's disks
+
+
+// function straightConsecutiveOccurence(e) {
+//     const rowNum = document.getElementById(`${e.target.id}`).classList[1];
+//     const colNum = document.getElementById(`${e.target.id}`).classList[0];
+//     const rowCells = document.getElementsByClassName(`${rowNum}`)
+
+//     let nbConsecutive = 0 
+
+//     rowCells.forEach(element => element.classList[-1] === playerDiskIdDict[currentPlayer]['diskId'] ? nbConsecutive++ : nbConsecutive = 0);
+
+// if (nbConsecutive = 4) {
+// console.log('Victory');
+// };
+
+
+// }
