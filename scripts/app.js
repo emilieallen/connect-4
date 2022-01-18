@@ -4,12 +4,12 @@ function init() {
     const start = null // get this with querySelector
     const scoreDisplay = document.getElementById("score-display")// get this with querySelector
   
-    const gridCellCount = 6 * 7
+    // const gridCellCount = 6 * 7
     const rawCount = 6
     const colCount = 7
     
     let score = 0;
-    let currentPlayer = 'player-1';
+    let currentPlayer = '';
 
     const playerDiskIdDict = {
         'player-1': {'diskId': 'firstPlayerDisk', 'name': ''},
@@ -38,37 +38,76 @@ function init() {
             cellPositionDict[cellId] = {'x':`x${c}`, 'y':`y${i}`};
           };
         };
+        initialisePlayer();
+        console.log(currentPlayer);
       }
 
     const initialisePlayer = () => {
-        currentPlayer = 'player-1'
-    }
+        currentPlayer = 'player-1';
+    };
 
     const nextPlayer = () => {
         currentPlayer === 'player-1' ? currentPlayer = 'player-2' : currentPlayer = 'player-1';
         console.log(currentPlayer);
+    };
+
+    const resetGrid = () => {
+        for (let i=1; i<=42; i++){
+            const cellClassList = document.getElementById(`${i}`).classList;
+            if (!cellClassList.contains('freeDisk')) {
+                cellClassList.remove(`${cellClassList[2]}`);
+                cellClassList.add('freeDisk');
+            };
+        };
     }
 
-    const rightDiagonalCells = (classList) => {
+    // const startGame = () => {
+    //     initialisePlayer();
+    // };
+
+
+    const leftDiagonalCells = (classList) => {
         let x = Number(classList[0][1]);
         let y = Number(classList[1][1]);
         let iMin = Math.max(1, x - y + 1);
         let iMax = Math.min(7, x - y + 6);
+
         let result = []; 
         for (let i=iMin; i<=iMax;i++) {
-            result.push(`x${i}.y${i+y-x}`);
+            result.push(`.x${i}.y${i + y - x}`);
         }
-        return result.join()
-    }
+        result = result.join();
+        
+        return document.querySelectorAll(result);
+    };
+
+    const rightDiagonalCells = (classList) => {
+        let x = Number(classList[0][1]);
+        let y = Number(classList[1][1]);
+        let iMin = Math.max(1, x + y - 6);
+        let iMax = Math.min(7, x + y - 1);
+
+        let result = []; 
+        for (let i=iMin; i<=iMax;i++) {
+            result.push(`.x${i}.y${x + y - i}`);
+        }
+        result = result.join();
+        
+        return document.querySelectorAll(result);
+    };
+
 
     function straightConsecutiveOccurence(classList) {
-        function getScore(array, player) {
+        function getScore(array) {
+            const player = playerDiskIdDict[currentPlayer]['diskId'];
             let number = 0;
             [...array].forEach(element => {
                 if (number < 4 && element.classList[2] === player) {
                     number++;
-                } else if (number === 4) {
-                    console.log('Victory');
+                    if (number === 4) {
+                        console.log('Victory');
+                        resetGrid();
+                    };
                 } else {
                     number = 0;
                 }});
@@ -76,17 +115,12 @@ function init() {
         }
     
         var obj = {
-            'targetId': classList,
-            'hScore': getScore(document.getElementsByClassName(classList[1]), playerDiskIdDict[currentPlayer]['diskId']),
-            'vScore': getScore(document.getElementsByClassName(classList[0]), playerDiskIdDict[currentPlayer]['diskId']),
-            'rDiagScore': rightDiagonalCells(classList)
-          }
-        //   console.log(obj.hScore);
-        //   console.log(obj.vScore);
-          console.log(obj.rDiagScore);
-        //   console.log(obj);
-
-    }
+            'hScore': getScore(document.getElementsByClassName(classList[1])),
+            'vScore': getScore(document.getElementsByClassName(classList[0])),
+            'rDiagScore': getScore(rightDiagonalCells(classList)),
+            'lDiagScore': getScore(leftDiagonalCells(classList))
+          };
+    };
 
 
     function handleMoleClick(e) {
@@ -104,84 +138,46 @@ function init() {
                 validateClick();
             };
         };
-    }
+    };
   
-    function startGame() {
-        initialisePlayer();
-    }
-  
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+
+    document.getElementById("startBtn").addEventListener("click", function() {
+        console.log('clicked');
+        modal.style.display = "block";
+    });
+
+    // Get the <span> element that closes the modal
+    document.getElementsByClassName("close")[0].addEventListener("click", function() {
+        console.log('close');
+        modal.style.display = "none";
+    })
+
+    // When the user clicks on the button, open the modal
+    // btn.onclick = function() {
+    //     modal.style.display = "block";
+    // }
+
+    // When the user clicks on <span> (x), close the modal
+    // span.onclick = function() {
+    //     modal.style.display = "none";
+    // }
+
+    // When the user clicks anywhere outside of the modal, close it
+    // window.onclick = function(event) {
+    //     if (event.target == modal) {
+    //         modal.style.display = "none";
+    //  }
+    // }
     // create the grid
     createGrid();
     
-    // start the game when the user clicks the start game button
-    document.getElementById("start").addEventListener("click", startGame);
+    // // start the game when the user clicks the start game button
+    // document.getElementById("start").addEventListener("click", startGame);
   
   }
   
   document.addEventListener('DOMContentLoaded', init)
-
-// i_min = max(1, x - y + 1)
-// i_max = min(7, x - y + 6)
-
-// for i_min<i<i_max:
-//   get class(i, i+y-x, player)
-
-//   function handleMoleClick(e) {
-//     console.log(e.target.id);
-//     const classList = document.getElementById(`${e.target.id}`).classList;
-//     if (!classList.contains('firstPlayerDisk') || !classList.contains('firstPlayerDisk')) {
-//         const validateClick = () => {
-//             const cellDisk = document.createElement("div");
-//             cellDisk.id = playerDiskIdDict[currentPlayer]['diskId'];
-//             // document.getElementById(`${e.target.id}`).className = currentPlayer;
-//             document.getElementById(`${e.target.id}`).appendChild(cellDisk);
-//             nextPlayer();
-//         }
-//         if (e.target.id < 36 && !!document.getElementById(`${Number(e.target.id) + 7}`).className) {
-//             validateClick();
-//         } else if (e.target.id >= 36) {
-//             validateClick();
-//         };
-//     };
-// }
-
-
-// function getKeyByValue(object, value) {
-//     return Object.keys(object).find(key => object[key] === value);
-//   }
-  
-// const map = {"first" : "1", "second" : "2"};
-// console.log(getKeyByValue(map,"2"));
-
-// check horizontal score
-
-// let x:col & y:row
-
-// get row/col number of cell clicked
-
-
-
-// get row/col number of first occurence of player's disk
-
-// const firstOccurence = document.getElementsByClassName(`${rowNum} ${playerDiskIdDict[currentPlayer]['diskId']}`)[0].classList[0]
-
-
-
-// check consecutive occurence of same payer's disks
-
-
-// function straightConsecutiveOccurence(e) {
-//     const rowNum = document.getElementById(`${e.target.id}`).classList[1];
-//     const colNum = document.getElementById(`${e.target.id}`).classList[0];
-//     const rowCells = document.getElementsByClassName(`${rowNum}`)
-
-//     let nbConsecutive = 0 
-
-//     rowCells.forEach(element => element.classList[-1] === playerDiskIdDict[currentPlayer]['diskId'] ? nbConsecutive++ : nbConsecutive = 0);
-
-// if (nbConsecutive = 4) {
-// console.log('Victory');
-// };
-
-
-// }
