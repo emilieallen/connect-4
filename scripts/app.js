@@ -1,25 +1,39 @@
+
 function init() {
     // DOM
     const grid = document.querySelector(".grid") // get this with querySelector
     const start = null // get this with querySelector
     const scoreDisplay = document.getElementById("score-display")// get this with querySelector
-  
-    // const gridCellCount = 6 * 7
+
     const rawCount = 6
     const colCount = 7
     
-    let score = 0;
+    // let score = 0;
     let currentPlayer = '';
 
     const playerDiskIdDict = {
-        'player-1': {'diskId': 'firstPlayerDisk', 'name': ''},
-        'player-2': {'diskId': 'secondPlayerDisk', 'name': ''}
+        'player-1': {'diskId': 'firstPlayerDisk', 'name': '', 'score': 0},
+        'player-2': {'diskId': 'secondPlayerDisk', 'name': '', 'score': 0}
     };
 
-    scoreDisplay.innerHTML = score;
+    // scoreDisplay.innerHTML = score;
     
     const cellPositionDict = {};
 
+    const displayScore = () => {
+        document.getElementById("player1score").innerText = `${playerDiskIdDict['player-1']['name']}: ${playerDiskIdDict['player-1']['score']}`;
+        document.getElementById("player2score").innerText = `${playerDiskIdDict['player-2']['name']}: ${playerDiskIdDict['player-2']['score']}`;
+    }
+
+    /**
+     * @name hash
+     * @description Random hashing algorithm I found on Stack Overflow.
+     * @param {string} str 
+     * @param {boolean} asString 
+     * @param {*} seed 
+     * 
+     * @returns {string} hash
+     */
     function createGrid() {
         // create 6 rows
         for (let i=1; i <= rawCount; i++) {
@@ -44,11 +58,21 @@ function init() {
 
     const initialisePlayer = () => {
         currentPlayer = 'player-1';
+        document.getElementById("player1score").style.backgroundColor = 'red';
     };
 
     const nextPlayer = () => {
         currentPlayer === 'player-1' ? currentPlayer = 'player-2' : currentPlayer = 'player-1';
-        console.log(currentPlayer);
+
+        if (currentPlayer === 'player-1') {
+            document.getElementById("player1score").style.backgroundColor = 'red';
+            document.getElementById("player2score").style.backgroundColor = '';
+        }
+        if (currentPlayer === 'player-2') {
+            document.getElementById("player1score").style.backgroundColor = '';
+            document.getElementById("player2score").style.backgroundColor = 'red';
+        }
+
     };
 
     const resetGrid = () => {
@@ -60,11 +84,6 @@ function init() {
             };
         };
     }
-
-    // const startGame = () => {
-    //     initialisePlayer();
-    // };
-
 
     const leftDiagonalCells = (classList) => {
         let x = Number(classList[0][1]);
@@ -105,7 +124,9 @@ function init() {
                 if (number < 4 && element.classList[2] === player) {
                     number++;
                     if (number === 4) {
-                        console.log('Victory');
+                        playerDiskIdDict[currentPlayer]['score'] ++;
+                        displayScore();
+                        displayWinner();
                         resetGrid();
                     };
                 } else {
@@ -139,44 +160,74 @@ function init() {
             };
         };
     };
+
   
     // Get the modal
     var modal = document.getElementById("myModal");
 
     // Get the button that opens the modal
 
-    document.getElementById("startBtn").addEventListener("click", function() {
-        console.log('clicked');
-        modal.style.display = "block";
+    document.getElementById("submitNames").addEventListener("click", function() {
+        const fInput = document.getElementById("fname").value;
+        const sInput = document.getElementById("lname").value;
+
+        if (fInput && sInput) {
+            playerDiskIdDict['player-1']['name'] = fInput;
+            playerDiskIdDict['player-2']['name'] = sInput;
+            modal.style.display = "none";
+            displayScore();
+        } else {
+            window.alert('Please provide both names !');
+        }
+
     });
 
-    // Get the <span> element that closes the modal
-    document.getElementsByClassName("close")[0].addEventListener("click", function() {
-        console.log('close');
+    const resetInputs = () => {
+        result = window.confirm('Are you sure you want to reset the game?');
+        if (result) {
+            document.getElementById("fname").value = '';
+            document.getElementById("lname").value = '';
+            playerDiskIdDict['player-1']['score'] = 0;
+            playerDiskIdDict['player-2']['score'] = 0;
+            playerDiskIdDict['player-1']['name'] = '';
+            playerDiskIdDict['player-2']['name'] = '';
+            modal.style.display = "block";
+            document.getElementById("modal2").style.display = "none";
+            document.getElementById("modal1").style.display = "block";
+            initialisePlayer();
+        }
+    }
+
+    document.getElementById("resetBtn").addEventListener("click", resetInputs);
+    document.getElementById("reset-game").addEventListener("click", resetInputs);
+
+    const continuePlaying = () => {
+        document.getElementById("modal2").style.display = "none";
         modal.style.display = "none";
-    })
+        initialisePlayer();
 
-    // When the user clicks on the button, open the modal
-    // btn.onclick = function() {
-    //     modal.style.display = "block";
-    // }
+    }
 
-    // When the user clicks on <span> (x), close the modal
-    // span.onclick = function() {
-    //     modal.style.display = "none";
-    // }
+    document.getElementById("keep-playing").addEventListener("click", continuePlaying);
 
-    // When the user clicks anywhere outside of the modal, close it
-    // window.onclick = function(event) {
-    //     if (event.target == modal) {
-    //         modal.style.display = "none";
-    //  }
-    // }
+    function displayWinner() {
+        modal.style.display = "block";
+        document.getElementById("modal1").style.display = "none";
+        document.getElementById("modal2").style.display = "block";
+        document.getElementById("congrats").innerHTML = `&#127882 ${playerDiskIdDict[currentPlayer]['name']} Wins !! `;
+
+        // if (playerDiskIdDict['player-1']['score'] > playerDiskIdDict['player-2']['score']) {
+        //     document.getElementById("congrats").innerHTML = `&#127882 ${playerDiskIdDict['player-1']['name']} Wins !! `;
+        // } else if ((playerDiskIdDict['player-1']['score'] === playerDiskIdDict['player-2']['score'])) {
+        //     document.getElementById("congrats").innerHTML = "It's a tie !!"
+        // } else {
+        //     document.getElementById("congrats").innerHTML = `&#127882 ${playerDiskIdDict['player-2']['name']} Wins !! `;
+        // }
+        
+
+    }
     // create the grid
     createGrid();
-    
-    // // start the game when the user clicks the start game button
-    // document.getElementById("start").addEventListener("click", startGame);
   
   }
   

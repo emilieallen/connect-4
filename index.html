@@ -14,14 +14,36 @@
           <h6>Connect 4</h6>
         </header>
       <div class="controls-wrapper">
-          <button id="startBtn">Start Playing</button>
           <div id="myModal" class="modal">
-            <div class="modal-content">
-              <span class="close">&times;</span>
-              <p>Some text in the Modal..</p>
+            <div id= "modal1" class="modal-content">
+              <form>
+                <h3>Name the players & start the game</h3>
+                <label for="fname">Player 1:</label>
+                <input type="text" id="fname" name="fname">
+                <label for="lname">Player 2:</label>
+                <input type="text" id="lname" name="lname">
+              </form>
+              <br>
+              <button id="submitNames">Start Playing</button>
+            </div>
+            <div id="modal2">
+              <p id="congrats"></p>
+              <div id="game-options">
+                <button id="keep-playing">Continue Playing</button>
+                <button id="reset-game">Start New Game</button>
+              </div>
             </div>
           </div>
-          <p>Current Score <span id="score-display">0</span></p>
+          <div id="gameBoard">
+            <div><button id="resetBtn">Reset Game</button></div>
+            <div id="score-box">
+              <p>Current Scores</p>
+              <div id="score-display">
+                <div id="player1score"></div>
+                <div id="player2score"></div>
+              </div>
+            </div>
+          </div>
       </div>
       <div class="grid-wrapper">
           <div class="grid"></div>
