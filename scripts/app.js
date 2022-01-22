@@ -28,6 +28,13 @@ function init() {
         document.getElementById("congrats").innerHTML = `&#127882 ${playerDiskIdDict[currentPlayer]['name']} Wins !! `;
     }
 
+    const displayDraw = () => {
+        modal.style.display = "block"; // Open Window
+        document.getElementById("modal1").style.display = "none"; // Hide input names modal
+        document.getElementById("modal2").style.display = "block"; // Show scores modal 
+        document.getElementById("congrats").innerHTML = "It's a Draw!! ";
+    }
+
     const initialisePlayer = () => {
         currentPlayer = 'player-1';
         document.getElementById("player1score").style.backgroundColor = 'rgb(55,168,199)';
@@ -202,8 +209,13 @@ function init() {
             } else if (e.target.id >= 36) {
                 validateClick();
             };
-        };
-    };
+        }
+
+        if (document.getElementsByClassName('freeDisk').length == 0) {
+            displayDraw();
+            resetGrid();
+        }
+    }
 
     // User Interface Functions & Variables
 

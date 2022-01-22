@@ -34,6 +34,5 @@ The winner is the first to create a line of four in any direction, including dia
 
 * Prettier CSS and responsive layout.
 * Add the option to play against the computer.
-* Game over if no winner & no free disk left. 
 
 
