@@ -16,6 +16,7 @@ The winner is the first to create a line of four in any direction, including dia
 
 ## Game instructions
 
+* Follow this link: https://emilieallen.github.io/
 * The game is playable for two players on the same computer, taking turns to make their moves.
 
 
@@ -29,6 +30,7 @@ The winner is the first to create a line of four in any direction, including dia
 * Players can choose to continue playing and resetting the game.
 * The game can be reset at any point.
 
+Source Code: https://github.com/emilieallen/connect-4
 
 ## Improvements
 
