@@ -11,7 +11,7 @@ body {
 }
   
 header {
-    height: 20vh;
+    height: 16vh;
 }
 
 .header > h6 {
@@ -43,13 +43,11 @@ header {
     flex-direction: row;
     height: 100px;
     width: 100%;
-    flex-grow: 1;
 }
 
 .freeDisk {
     background-color: rgba(245, 245, 245, 0.904);
     border-radius: 50%;
-    flex-grow: 1;
 }
 
 .firstPlayerDisk {

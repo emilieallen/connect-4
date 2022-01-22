@@ -210,7 +210,6 @@ function init() {
                 validateClick();
             };
         }
-
         if (document.getElementsByClassName('freeDisk').length == 0) {
             displayDraw();
             resetGrid();
@@ -277,7 +276,7 @@ function init() {
     // Add event listener to button using the continuePlaying function
     document.getElementById("keep-playing").addEventListener("click", continuePlaying);
 
-
+    
     // create the grid
     createGrid();
   
