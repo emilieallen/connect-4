@@ -6,13 +6,10 @@ body {
     height: 100vh;
     margin: 0;
     font-family: 'Spartan', sans-serif;
-    /* background: rgb(2,0,36);
-    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,0.9318102240896359) 35%, rgba(0,212,255,1) 100%); */
     background: rgb(2,0,36);
     background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(9,9,121,0.9122023809523809) 35%, rgba(75,86,88,1) 100%);
 }
   
-
 header {
     height: 20vh;
 }
@@ -24,14 +21,11 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* color: rgb(99, 123, 128); */
     color: rgb(55,168,199);
 }
 
-
-  
 .grid-wrapper {
-    height: 100vh;
+    height: 80vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,6 +35,7 @@ header {
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
     height: 600px;
     width: 600px;
+
 }
 
 .grid div {
@@ -48,20 +43,22 @@ header {
     flex-direction: row;
     height: 100px;
     width: 100%;
+    flex-grow: 1;
 }
 
 .freeDisk {
     background-color: rgba(245, 245, 245, 0.904);
     border-radius: 50%;
+    flex-grow: 1;
 }
 
 .firstPlayerDisk {
-    background-color: black;
+    background-color:rgb(55,168,199);;
     border-radius: 50%;
 }
 
 .secondPlayerDisk {
-    background-color: red;
+    background-color: rgb(230, 218, 56);
     border-radius: 50%;
 }
 
@@ -105,15 +102,17 @@ header {
       display: flex;
       flex-direction: row-reverse;
       justify-content: space-between;
-      padding-right: 10%;
-      padding-left: 2%;
+      padding-right: 20%;
+      padding-left: 20%;
   }
 
   #score-box {
       display: flex;
       flex-direction: column;
       width: 55%;
-      background-color: yellowgreen;
+      border:rgba(0, 0, 0, 0.2) solid 2px;
+      padding: 5px;
+      text-align: center;
   }
 
   #score-display {
@@ -122,6 +121,6 @@ header {
       justify-content: space-between;
   }
 
-  /* p  {
+  #current-scores  {
       color:azure;
-  } */
+  }
